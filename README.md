@@ -1,9 +1,3 @@
-# Hyprland Dotfiles — Debian Notes
-
-This README provides minimal Debian-specific installation and usage instructions for the hyprland.lua config already present in this repository.
-
-IMPORTANT: I will not modify any dotfiles in this repo. This file is documentation only.
-
 ## About
 - This repository contains a hyprland.lua config (Lua-style config using the `hl` API) for Hyprland v0.55.4.
 - Config path in this repo: `.config/hypr/hyprland.lua` (do not edit the dotfiles unless you want to).
