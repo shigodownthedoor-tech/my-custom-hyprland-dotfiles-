@@ -1,0 +1,135 @@
+/* Universal Base Reset */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Cascadia Code", monospace;
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 0;
+}
+
+/* Main Bar Window */
+window#waybar {
+    background-color: #0a0a0a;
+    border-bottom: 2px solid #1a1a1a;
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* Left, Center, Right Module Blending */
+.modules-left, .modules-center, .modules-right {
+    background-color: transparent;
+}
+
+/* Individual Module Box Defaults */
+#workspaces button,
+#clock,
+#cpu,
+#memory,
+#pulseaudio,
+#network,
+#battery {
+    padding: 0 16px;
+    background-color: #111111;
+    color: #eeeeee;
+    border: 1px solid #222222;
+    margin: 4px 2px;
+}
+
+/* Workspace Specific Styling */
+#workspaces button {
+    color: #666666;
+    border-right: none;
+    margin: 4px 0;
+}
+
+#workspaces button.active {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #444444;
+}
+
+#workspaces button.urgent {
+    background-color: #a54242;
+    color: #ffffff;
+}
+
+/* Center Clock Accent */
+#clock {
+    background-color: #000000;
+    border: 1px solid #333333;
+    color: #ffffff;
+}
+
+/* System Alerts Configuration */
+#battery.critical:not(.charging) {
+    background-color: #a54242;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#pulseaudio.muted {
+    background-color: #222222;
+    color: #666666;
+}
+debian@Debian:~$ ls ~/.config/waybar/
+config.jsonc  style.css
+debian@Debian:~$ cat ~/.config/waybar/config.jsonc
+{
+    "layer": "top",
+    "position": "top",
+    "height": 32,
+    "spacing": 4,
+    "modules-left": ["hyprland/workspaces", "hyprland/mode"],
+    "modules-center": ["clock"],
+    "modules-right": ["cpu", "memory", "pulseaudio", "network", "battery"],
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{name}"
+    },
+
+    "clock": {
+        "format": "{:%Y-%m-%d  |  %H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "cpu": {
+        "format": "CPU {usage}%",
+        "interval": 2
+    },
+
+    "memory": {
+        "format": "RAM {percentage}%",
+        "interval": 2
+    },
+
+    "pulseaudio": {
+        "format": "VOL {volume}%",
+        "format-muted": "MUTED",
+        "scroll-step": 5
+    },
+
+    "network": {
+        "format-wifi": "WIFI {essid}",
+        "format-ethernet": "ETH LINE",
+        "format-disconnected": "OFFLINE"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "BAT {capacity}%",
+        "format-charging": "CHG {capacity}%",
+        "format-plugged": "PWR {capacity}%",
+        "format-alt": "TIME {time}"
+    }
+}
