@@ -60,7 +60,6 @@
 
 - If monitor mode fails, try a lower refresh (e.g., 60) or remove `mode` from the `hl.monitor` block to let Hyprland auto-select.
 - If you need to force a connector, edit `.config/hypr/hyprland.lua` and set `output = "DP-1"` (or your connector name).
-
-## Notes
-- This README intentionally does not change any dotfiles. If you want helper scripts, systemd user units, or an expanded README, ask and I can add them in a separate commit without altering your existing configuration files.
+## NEW UPDATE IM TOO LAZY TO DO A NEW RELEASE SO I DID IT HERE
+- I added a install.sh script for - Void Linux - Arch Linux and Arch based - Debian and Debian or Ubuntu based - Solus - Gentoo And More! If there is any errors please let me know! Goodbye guys
 
