@@ -18,7 +18,6 @@ To run the installer, navigate to the repository root and execute:
 chmod +x install.sh
 ./install.sh
 ```
-*Please report any installation script errors via GitHub Issues.*
 
 ---
 
@@ -91,4 +90,9 @@ The configuration builds a `1920x1080` monitor mode. It defaults to **60 Hz** un
   Lower the refresh rate to `60` or remove the `mode` parameter from the `hl.monitor` block to enable auto-detection.
 * **Force a specific display output:**
   Edit `.config/hypr/hyprland.lua` and explicitly define your connector (e.g., `output = "DP-1"`).
-## If you have found any bugs let me know!
+
+---
+
+## 🐛 Feedback & Bug Reports
+
+If you encounter any bugs, setup errors, or script issues, please let me know! Open an issue in this repository detailing your system setup and the error messages you received.
