@@ -1,49 +1,61 @@
 # Debian & Multi-Distro Hyprland Dotfiles
 
-A custom Hyprland configuration utilizing a Lua-style config wrapper (`hl` API). It features dynamic refresh rate switching and automated installation scripts.
+A custom Hyprland configuration utilizing a Lua-style config wrapper (`hl` API). It features dynamic refresh rate switching and automated installation scripts optimized for AMD hardware.
 
 ---
 
-## 🚀 Quick Start (Automated Install)
+## 🚀 Installation
 
-You can now use the included multi-distro installation script. It supports:
+### Option 1: Automated Script (Multi-Distro)
+The included installation script automatically detects and configures your system. It supports:
 * **Arch Linux** (and derivatives)
 * **Debian / Ubuntu** (and derivatives)
 * **Void Linux**
 * **Solus**
 * **Gentoo**
 
-To run the installer, navigate to the repository root and execute:
+To run the installer:
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
----
+### Option 2: Manual Fallback Steps (By Distribution)
+If the script fails while you are distro-hopping, use these verified command blocks to install the dependencies manually, then symlink your dotfiles.
 
-## 🛠️ Manual Setup (Debian Focus)
-
-### 1. Install Prerequisites
-Some packages may require Debian Backports or building from source:
+#### 🟦 Arch Linux & Derivatives
 ```bash
-sudo apt update && sudo apt install -y \
-  wayland-utils wl-clipboard grim slurp wf-recorder \
-  rofi dunst lxappearance xdg-desktop-portal \
-  xdg-desktop-portal-hyprland hyprpaper
+sudo pacman -Syu --needed hyprland hyprpaper xdg-desktop-portal-hyprland waybar dunst kitty nemo wl-clipboard grim slurp wf-recorder rofi lxappearance
 ```
-> ⚠️ **Note:** Hyprland is not in the Debian Stable repos. You must use backports, a third-party repo, or compile from source.
 
-### 2. Deploy Configuration
-Choose **one** of the methods below to deploy the configuration:
+#### 🟪 Debian / Ubuntu & Derivatives
+> ⚠️ **Note:** Hyprland is not packaged in the Debian Stable repos. You must enable Debian Backports, compile from source, or use a third-party repository.
+```bash
+sudo apt update && sudo apt install -y wayland-utils wl-clipboard grim slurp wf-recorder rofi dunst lxappearance xdg-desktop-portal xdg-desktop-portal-hyprland hyprpaper waybar kitty nemo
+```
 
-* **Option A: Copy files directly**
-  ```bash
-  cp .config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
-  ```
-* **Option B: Symlink (Recommended for Git tracking)**
-  ```bash
-  ln -s \$(pwd)/.config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
-  ```
+#### 🟩 Void Linux
+```bash
+sudo xbps-install -Syu hyprland hyprpaper xdg-desktop-portal-hyprland waybar dunst kitty nemo wl-clipboard grim slurp wf-recorder rofi lxappearance
+```
+
+#### 🟦 Solus
+```bash
+sudo eopkg it hyprland hyprpaper xdg-desktop-portal-hyprland waybar dunst kitty nemo wl-clipboard grim slurp wf-recorder rofi lxappearance
+```
+
+#### 🟫 Gentoo
+Ensure your Wayland and desktop global `USE` flags are configured in `/etc/portage/make.conf` before compiling:
+```bash
+sudo emerge --ask gui-wm/hyprland gui-apps/hyprpaper gui-libs/xdg-desktop-portal-hyprland gui-apps/waybar x11-misc/dunst x11-terms/kitty gnome-extra/nemo gui-apps/wl-clipboard gui-apps/grim gui-apps/slurp gui-apps/wf-recorder x11-misc/rofi x11-misc/lxappearance
+```
+
+#### 🔗 Link Your Configuration File
+Once your packages are installed, finish the manual setup by symlinking the config to your home folder:
+```bash
+mkdir -p ~/.config/hypr
+ln -s \$(pwd)/.config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+```
 
 ---
 
@@ -64,14 +76,11 @@ The configuration builds a `1920x1080` monitor mode. It defaults to **60 Hz** un
 
 ---
 
-## 📦 Package Recommendations
+## 🖥️ AMD GPU Optimization
 
-* **Core:** `hyprland`, `hyprpaper`, `xdg-desktop-portal-hyprland`
-* **Status Bar:** `waybar`
-* **Notifications:** `dunst`
-* **Terminal:** `kitty` (Config default)
-* **File Manager:** `nemo` (Bound to `SUPER + E`)
-* **Utilities:** `wl-clipboard`, `grim`, `slurp`, `wf-recorder`, `rofi`
+This setup is tailored for AMD graphics cards utilizing the native open-source `amdgpu` kernel driver. 
+* **Performance:** If you experience any micro-stutters, ensure your distro's `mesa` and `vulkan-radeon` packages are completely up to date.
+* **Hardware Acceleration:** Ensure `libva-mesa-driver` is installed for efficient video decoding.
 
 ---
 
@@ -95,4 +104,4 @@ The configuration builds a `1920x1080` monitor mode. It defaults to **60 Hz** un
 
 ## 🐛 Feedback & Bug Reports
 
-If you encounter any bugs, setup errors, or script issues, please let me know! Open an issue in this repository detailing your system setup and the error messages you received.
+If you encounter any bugs, setup errors, or script issues, please open an issue in this repository detailing your system setup, current distribution, and any error logs.
