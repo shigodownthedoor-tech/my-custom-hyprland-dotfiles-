@@ -1,65 +1,94 @@
-## About
-- This repository contains a hyprland.lua config (Lua-style config using the `hl` API) for Hyprland v0.55.4.
-- Config path in this repo: `.config/hypr/hyprland.lua` (do not edit the dotfiles unless you want to).
-- This config builds a 1920x1080@<refresh> monitor mode, where the refresh rate defaults to 60 Hz unless you set the `HYPR_REFRESH` environment variable.
+# Debian & Multi-Distro Hyprland Dotfiles
 
-## Quick setup on Debian
-1. Install prerequisites (some packages may require backports or building from source):
+A custom Hyprland configuration utilizing a Lua-style config wrapper (`hl` API). It features dynamic refresh rate switching and automated installation scripts.
 
-   sudo apt update
-   sudo apt install -y wayland-utils wl-clipboard grim slurp wf-recorder rofi dunst lxappearance xdg-desktop-portal \
-     xdg-desktop-portal-hyprland hyprpaper
+---
 
-   Notes:
-   - Hyprland may not be packaged in Debian stable. You can look for a backport, use a third-party package repository, or build Hyprland from source. See Hyprland docs for building.
-   - `xdg-desktop-portal-hyprland` provides portal integrations on Hyprland.
+## 🚀 Quick Start (Automated Install)
 
-2. Deploy the config from this repo to your local config directory (no files in this repo will be modified by this step):
+You can now use the included multi-distro installation script. It supports:
+* **Arch Linux** (and derivatives)
+* **Debian / Ubuntu** (and derivatives)
+* **Void Linux**
+* **Solus**
+* **Gentoo**
 
-   # copy
-   cp .config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+To run the installer, navigate to the repository root and execute:
+```bash
+chmod +x install.sh
+./install.sh
+```
+*Please report any installation script errors via GitHub Issues.*
 
-   # or symlink (recommended if you want to keep the repo as the source of truth)
-   ln -s $(pwd)/.config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+---
 
-3. Set the refresh rate you want (optional — default is 60 Hz):
+## 🛠️ Manual Setup (Debian Focus)
 
-   # temporary for current session
-   export HYPR_REFRESH=180
+### 1. Install Prerequisites
+Some packages may require Debian Backports or building from source:
+```bash
+sudo apt update && sudo apt install -y \
+  wayland-utils wl-clipboard grim slurp wf-recorder \
+  rofi dunst lxappearance xdg-desktop-portal \
+  xdg-desktop-portal-hyprland hyprpaper
+```
+> ⚠️ **Note:** Hyprland is not in the Debian Stable repos. You must use backports, a third-party repo, or compile from source.
 
-   # persistent (add to ~/.profile or ~/.profile.d/hypr.sh so display managers inherit it)
-   echo 'export HYPR_REFRESH=180' >> ~/.profile
+### 2. Deploy Configuration
+Choose **one** of the methods below to deploy the configuration:
 
-   If you prefer to hardcode a default in the config, edit the `REFRESH` fallback in `hyprland.lua`.
+* **Option A: Copy files directly**
+  ```bash
+  cp .config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+  ```
+* **Option B: Symlink (Recommended for Git tracking)**
+  ```bash
+  ln -s \$(pwd)/.config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+  ```
 
-4. Launch Hyprland
-- From a TTY (manual): log into a plain TTY and run `Hyprland` (or your start script).
-- From a display manager: ensure the DM uses a session that starts Hyprland with your environment.
+---
 
-## Recommended Debian packages
-- hyprland (may require backport/build)
-- hyprpaper
-- xdg-desktop-portal-hyprland
-- waybar
-- dunst
-- wl-clipboard
-- grim, slurp
-- wf-recorder
-- rofi
-- kitty (or your preferred terminal)
-- nemo (optional; the config binds SUPER+E to `nemo`)
+## ⚙️ Configuration & Refresh Rate
 
-## Troubleshooting
-- If Hyprland doesn't start, check journalctl for errors:
+The configuration builds a `1920x1080` monitor mode. It defaults to **60 Hz** unless the `$HYPR_REFRESH` environment variable is set.
 
+### Set a Custom Refresh Rate
+* **Temporary (Current Session):**
+  ```bash
+  export HYPR_REFRESH=180
+  ```
+* **Persistent (Add to Profile):**
+  ```bash
+  echo 'export HYPR_REFRESH=180' >> ~/.profile
+  ```
+  *(Alternatively, hardcode your default fallback directly inside `.config/hypr/hyprland.lua`)*
+
+---
+
+## 📦 Package Recommendations
+
+* **Core:** `hyprland`, `hyprpaper`, `xdg-desktop-portal-hyprland`
+* **Status Bar:** `waybar`
+* **Notifications:** `dunst`
+* **Terminal:** `kitty` (Config default)
+* **File Manager:** `nemo` (Bound to `SUPER + E`)
+* **Utilities:** `wl-clipboard`, `grim`, `slurp`, `wf-recorder`, `rofi`
+
+---
+
+## 🔍 Troubleshooting
+
+* **Hyprland fails to start:**
+  Check the user journal logs:
+  ```bash
   journalctl --user -b -u hyprland.service
-
-  or check system logs:
-
+  ```
+  Or check global system logs:
+  ```bash
   journalctl -b | grep -i hyprland
-
-- If monitor mode fails, try a lower refresh (e.g., 60) or remove `mode` from the `hl.monitor` block to let Hyprland auto-select.
-- If you need to force a connector, edit `.config/hypr/hyprland.lua` and set `output = "DP-1"` (or your connector name).
-## NEW UPDATE IM TOO LAZY TO DO A NEW RELEASE SO I DID IT HERE
-- I added a install.sh script for - Void Linux - Arch Linux and Arch based - Debian and Debian or Ubuntu based - Solus - Gentoo And More! If there is any errors please let me know! Goodbye guys
+  ```
+* **Monitor display/mode fails:**
+  Lower the refresh rate to `60` or remove the `mode` parameter from the `hl.monitor` block to enable auto-detection.
+* **Force a specific display output:**
+  Edit `.config/hypr/hyprland.lua` and explicitly define your connector (e.g., `output = "DP-1"`).
 
