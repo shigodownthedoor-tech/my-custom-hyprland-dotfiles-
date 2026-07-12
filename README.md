@@ -42,7 +42,7 @@ sudo pacman -Syu --needed hyprland hyprpaper xdg-desktop-portal-hyprland waybar 
 ```
 
 #### 🟪 Debian / Ubuntu & Derivatives
-> ⚠️ **Note:** Hyprland and its native utilities are not packaged in the standard Debian Stable repos. You must enable Debian Backports, compile from source, or use a third-party repository first.
+> ⚠️ **Note:** Hyprland and its native utilities are not packaged in the standard Debian Stable repos. You must enable Debian Backports, compile from source, or use a third-party repository first. Or even better, use forky/SID repositories.
 ```bash
 sudo apt update && sudo apt install -y wayland-utils wl-clipboard grim slurp wf-recorder rofi dunst lxappearance xdg-desktop-portal kitty nemo
 ```
