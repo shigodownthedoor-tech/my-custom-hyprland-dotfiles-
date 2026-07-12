@@ -21,12 +21,12 @@ APK_FLAGS="add"
 if [[ "$1" == "--dry-run" ]] || [[ "$1" == "--pretend" ]]; then
     echo -e "${YELLOW}=== [SIMULATION ACTIVE]: Testing Script Infrastructure Legitely ===${NC}"
     DRY_RUN=true
-    APT_FLAGS="-s -y --reinstall"                      # Force full simulation log stream
-    PACMAN_FLAGS="-Syup"                                # Safe URL Print string for Pacman
-    DNF_FLAGS="install --setopt=tsflags=test -y"        # Safe Transaction Test string for DNF
-    ZYPPER_FLAGS="install --dry-run -y"                 # Safe Dry-Run string for Zypper
-    XBPS_FLAGS="-Syun"                                  # Safe Dry-Run string for XBPS (Void)
-    APK_FLAGS="add --simulate"                          # Safe Simulation string for APK (Alpine)
+    APT_FLAGS="-s -y --reinstall"                      
+    PACMAN_FLAGS="-Syup"                                
+    DNF_FLAGS="install --setopt=tsflags=test -y"        
+    ZYPPER_FLAGS="install --dry-run -y"                 
+    XBPS_FLAGS="-Syun"                                  
+    APK_FLAGS="add --simulate"                          
 else
     echo -e "${GREEN}=== Universal Multi-Distro Hyprland Installer ===${NC}"
 fi
@@ -67,17 +67,18 @@ echo -e "Target System Detected: ${YELLOW}$NAME${NC} ($FAMILY)"
 # 2. Secure DEB822 Repository Setup for APT Systems
 if [ "$IS_APT_BASED" = true ]; then
     if [ "$DRY_RUN" = true ]; then
-        echo -e "${YELLOW}[DRY-RUN]: Would configure official Wiki-Compliant Debian Sid DEB822 repository block...${NC}"
+        echo -e "${YELLOW}[DRY-RUN]: Would configure official Wiki-Compliant Debian Forky DEB822 repository block...${NC}"
     else
         echo -e "${YELLOW}Purging older configuration remnants...${NC}"
         sudo rm -f /etc/apt/sources.list.d/hyprland-sid.list
         sudo rm -f /etc/apt/sources.list.d/sid.sources
+        sudo rm -f /etc/apt/sources.list.d/forky.sources
 
-        echo -e "${YELLOW}Deploying official Wiki-Compliant Debian Sid DEB822 repository block...${NC}"
-        sudo tee /etc/apt/sources.list.d/sid.sources > /dev/null <<EOF
+        echo -e "${YELLOW}Deploying official Wiki-Compliant Debian Forky DEB822 repository block...${NC}"
+        sudo tee /etc/apt/sources.list.d/forky.sources > /dev/null <<EOF
 Types: deb
-URIs: https://debian.org
-Suites: sid
+URIs: http://deb.debian.org/debian/
+Suites: forky
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
@@ -94,25 +95,21 @@ install_packages() {
         # --- DEBIAN / UBUNTU / MINT BRANCH ---
         if [ "$IS_APT_BASED" = true ]; then
             if [ "$DRY_RUN" = false ]; then
-                # Real deployment flow
                 if ! sudo apt-get update; then
                     echo -e "${RED}Warning: apt update failed on attempt $attempt.${NC}"
                     ((attempt++))
                     sleep 3
                     continue
                 fi
-                echo -e "${YELLOW}Executing full system upgrade to migrate core dependencies to Sid...${NC}"
+                echo -e "${YELLOW}Executing full system upgrade to migrate core dependencies to Forky...${NC}"
                 sudo apt-get dist-upgrade $APT_FLAGS
             else
-                # Simulation Mode: Force a real upgrade layout printout by triggering reinstall behavior
                 echo -e "${YELLOW}[DRY-RUN]: Simulating complete package transaction layouts...${NC}"
-                apt-get dist-upgrade $APT_FLAGS
+                sudo apt-get dist-upgrade $APT_FLAGS
             fi
 
-            # Run the actual desktop utilities simulation/installation
-            local cmd_prefix="sudo"
-            [ "$DRY_RUN" = true ] && cmd_prefix=""
-            if $cmd_prefix apt-get install $APT_FLAGS hyprland wayland-utils wl-clipboard grim slurp rofi dunst lxappearance xdg-desktop-portal xdg-desktop-portal-hyprland hyprpaper waybar kitty nemo; then
+            # Run actual desktop utilities deployment
+            if sudo apt-get install $APT_FLAGS hyprland wayland-utils wl-clipboard grim slurp rofi-wayland dunst lxappearance xdg-desktop-portal xdg-desktop-portal-hyprland hyprpaper waybar kitty nemo; then
                 return 0
             fi
 
@@ -150,7 +147,7 @@ install_packages() {
 
         # --- ALPINE LINUX BRANCH (INDEPENDENT) ---
         elif [ "$IS_ALPINE" = true ]; then
-            if sudo apk $APK_FLAGS hyprland wl-clipboard grim slurp rofi-wayland dunst lxappearance xdg-desktop-portal xdg-desktop-portal-wlr hyprpaper waybar kitty nemo; then
+            if sudo apk $APK_FLAGS hyprland wl-clipboard grim slurp rofi-wayland dunst lxappearance xdg-desktop-portal xdg-desktop-portal-hyprland hyprpaper waybar kitty nemo; then
                 return 0
             fi
 
@@ -182,9 +179,7 @@ if [ "$DRY_RUN" = true ]; then
     echo -e "${GREEN}=== Simulation Completed Successfully with Zero System Errors! ===${NC}"
 else
     echo -e "${GREEN}Deploying application configuration links...${NC}"
-    mkdir -p ~/.config/hypr ~/.config/waybar ~/.config/rofi ~/.config/kitty
-    [ -f .config/hypr/hyprland.lua ] && ln -sf "$(pwd)/.config/hypr/hyprland.lua" ~/.config/hypr/hyprland.lua
-    [ -f config.jsonc ] && ln -sf "$(pwd)/config.jsonc" ~/.config/waybar/config
-    [ -f config.rasi ] && ln -sf "$(pwd)/config.rasi" ~/.config/rofi/config.rasi
-    echo -e "${GREEN}=== System Environment Setup Completed Successfully! ===${NC}"
+    mkdir -p ~/.config/hypr
+    ln -sf "$(pwd)/.config/hypr/hyprland.lua" ~/.config/hypr/hyprland.lua
+    echo -e "${GREEN}=== Setup Executed Perfectly! Launch your session via SDDM or run 'Hyprland' ===${NC}"
 fi
