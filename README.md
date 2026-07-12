@@ -4,6 +4,19 @@ A custom Hyprland configuration utilizing a Lua-style config wrapper (`hl` API).
 
 ---
 
+## 📥 Cloning the Repository
+
+If you are new to Git, run the following commands to download the setup:
+
+```bash
+git clone https://github.com
+cd my-custom-hyprland-dotfiles
+ls
+```
+If you see the files listed, you are ready to proceed!
+
+---
+
 ## 🚀 Installation
 
 ### Option 1: Automated Script (Multi-Distro)
@@ -29,9 +42,9 @@ sudo pacman -Syu --needed hyprland hyprpaper xdg-desktop-portal-hyprland waybar 
 ```
 
 #### 🟪 Debian / Ubuntu & Derivatives
-> ⚠️ **Note:** Hyprland is not packaged in the Debian Stable repos. You must enable Debian Backports, compile from source, or use a third-party repository.
+> ⚠️ **Note:** Hyprland and its native utilities are not packaged in the standard Debian Stable repos. You must enable Debian Backports, compile from source, or use a third-party repository first.
 ```bash
-sudo apt update && sudo apt install -y wayland-utils wl-clipboard grim slurp wf-recorder rofi dunst lxappearance xdg-desktop-portal xdg-desktop-portal-hyprland hyprpaper waybar kitty nemo
+sudo apt update && sudo apt install -y wayland-utils wl-clipboard grim slurp wf-recorder rofi dunst lxappearance xdg-desktop-portal kitty nemo
 ```
 
 #### 🟩 Void Linux
